@@ -1,5 +1,7 @@
-sample_name	unit_name	fq1	fq2	sra	read_format	call_peaks	input	peak_type	sample_group
-st5_sfGFP-GAFN_input_rep1	st5_sfGFP-GAFN_input_rep1			SRR13498838	SE	FALSE			sfGFP-GAFN_input
-st5_sfGFP-GAFN_aGFP_IP_rep1	st5_sfGFP-GAFN_aGFP_IP_rep1			SRR13498839	SE	TRUE	st5_sfGFP-GAFN_input_rep1	narrow	sfGFP-GAFN_aGFP_IP
-st5_sfGFP-GAFN_input_rep2	st5_sfGFP-GAFN_input_rep2			SRR13498840	SE	FALSE			sfGFP-GAFN_input
-st5_sfGFP-GAFN_aGFP_IP_rep2	st5_sfGFP-GAFN_aGFP_IP_rep2			SRR13498841	SE	TRUE	st5_sfGFP-GAFN_input_rep2	narrow	sfGFP-GAFN_aGFP_IP
+sample_name	unit_name	fq1	fq2	sra	read_format	sample_group
+sfGFP-GAF-N_control_rep1	SRR12045612			SRR12045612	SE	sfGFP-GAF-N_control
+sfGFP-GAF-N_control_rep2	SRR12045613			SRR12045613	SE	sfGFP-GAF-N_control
+sfGFP-GAF-N_control_rep3	SRR12045614			SRR12045614	SE	sfGFP-GAF-N_control
+sfGFP-GAF-N_degradFP_rep1	SRR12045615			SRR12045615	SE	sfGFP-GAF-N_degradFP
+sfGFP-GAF-N_degradFP_rep2	SRR12045616			SRR12045616	SE	sfGFP-GAF-N_degradFP
+sfGFP-GAF-N_degradFP_rep3	SRR12045617			SRR12045617	SE	sfGFP-GAF-N_degradFP

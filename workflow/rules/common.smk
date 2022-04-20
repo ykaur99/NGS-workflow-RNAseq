@@ -6,6 +6,12 @@ units = (
     .sort_index()
 )
 
+samples = (
+    pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
+    .set_index("sample_name", drop=False)
+    .sort_index()
+)
+
 # function to check config files for inclusion of optional workflow steps
 def is_activated(xpath):
     c = config
@@ -73,6 +79,12 @@ def get_merged_spikeIn_input(wildcards):
 	if all(unit["call_peaks"]):
 		return "results/bigwigs/zscore_normalized/merged/{sample}.bw".format(sample = wildcards.sample)
 
+
+def get_featurecounts_input(wildcards):
+	sample =  samples[samples["experiment"] == wildcards.experiment]
+	in_samples = pd.unique(sample["sample_name"])
+	return expand(
+		"results/aligned_reads/filtered/{sample}.bam", sample=in_samples)
 
 def get_final_output():
 	final_output = []

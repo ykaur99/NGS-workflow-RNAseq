@@ -1,0 +1,7 @@
+sample_name	condition	experiment
+sfGFP-GAF-N_control_rep1	control	GAF_RNAseq
+sfGFP-GAF-N_control_rep2	control	GAF_RNAseq
+sfGFP-GAF-N_control_rep3	control	GAF_RNAseq
+sfGFP-GAF-N_degradFP_rep1	degrad	GAF_RNAseq
+sfGFP-GAF-N_degradFP_rep2	degrad	GAF_RNAseq
+sfGFP-GAF-N_degradFP_rep3	degrad	GAF_RNAseq
