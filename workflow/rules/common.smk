@@ -1,27 +1,5 @@
 import pandas as pd
 
-
-# def get_genome_fn():
-# 	if config["use_spikeIn"]:
-# 		return "resources/genome.fasta"
-# 	else:
-# 		return "resources/ref_genome.fasta"
-# 		
-# def get_genome_bn():
-# 	if config["use_spikeIn"]:
-# 		return "resources/genome"
-# 	else:
-# 		return "resources/ref_genome"
-
-# read in table with sample metadata
-# samples = (
-#     pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
-#     .set_index("sample_name", drop=False)
-#     .sort_index()
-# )
-
-
-
 units = (
     pd.read_csv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
     .set_index(["sample_name", "unit_name"], drop=False)
@@ -51,7 +29,7 @@ def get_fq_merge(wildcards):
 	return units.loc[wildcards.sample, fq].tolist()
 
 
-def get_bowtie2_input(wildcards):
+def get_hisat2_input(wildcards):
 	if not is_activated("mergeReads"):
 		unit = units.loc[wildcards.sample]
 		if all(pd.isna(unit["fq1"])):
@@ -76,46 +54,6 @@ def get_bam_merge(wildcards):
 	return expand(
 		"results/aligned_reads/filtered/{group}.bam", group=group)
 
-
-def get_macs2_input_narrow_se(wildcards):
-	unit = units.loc[wildcards.sample]
-	if all(unit["call_peaks"]):
-		if all(unit["read_format"] == "SE"):
-			if all(unit["peak_type"] == "narrow"):
-				if all(pd.isna(unit["input"])):
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam"}
-				else:
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam", "control": "results/aligned_reads/filtered/{input}.bam".format(input=unit.iloc[0].input)}
-
-def get_macs2_input_broad_se(wildcards):
-	unit = units.loc[wildcards.sample]
-	if all(unit["call_peaks"]):
-		if all(unit["read_format"] == "SE"):
-			if all(unit["peak_type"] == "broad"):
-				if all(pd.isna(unit["input"])):
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam"}
-				else:
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam", "control": "results/aligned_reads/filtered/{input}.bam".format(input=unit.iloc[0].input)}
-
-def get_macs2_input_narrow_pe(wildcards):
-	unit = units.loc[wildcards.sample]
-	if all(unit["call_peaks"]):
-		if all(unit["read_format"] == "PE"):
-			if all(unit["peak_type"] == "narrow"):
-				if all(pd.isna(unit["input"])):
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam"}
-				else:
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam", "control": "results/aligned_reads/filtered/{input}.bam".format(input=unit.iloc[0].input)}
-
-def get_macs2_input_broad_pe(wildcards):
-	unit = units.loc[wildcards.sample]
-	if all(unit["call_peaks"]):
-		if all(unit["read_format"] == "PE"):
-			if all(unit["peak_type"] == "broad"):
-				if all(pd.isna(unit["input"])):
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam"}
-				else:
-					return {"treatment": "results/aligned_reads/filtered/{sample}.bam", "control": "results/aligned_reads/filtered/{input}.bam".format(input=unit.iloc[0].input)}
 
 
 def get_scaling_input(wildcards):
@@ -194,52 +132,5 @@ def get_final_output():
 						sample = units.loc[units["call_peaks"],"sample_group"]
 					)
 				)
-
-
-
-	# add narrow peak output
-	if any( (units["call_peaks"]) & (units["peak_type"] == "narrow") & (units["read_format"] == "SE")):
-		out_samples =  units[(units["call_peaks"]) & (units["peak_type"] == "narrow") & (units["read_format"] == "SE")]
-		final_output.extend(expand(
-				[
-					"results/narrow_peaks/se/{sample}{ext}"
-				],
-				sample = out_samples["sample_name"],
-				ext = ["_peaks.xls", "_peaks.narrowPeak","_summits.bed"]
-			)
-		)
-
-	if any( (units["call_peaks"]) & (units["peak_type"] == "narrow") & (units["read_format"] == "PE")):
-		out_samples =  units[(units["call_peaks"]) & (units["peak_type"] == "narrow") & (units["read_format"] == "PE")]
-		final_output.extend(expand(
-				[
-					"results/narrow_peaks/pe/{sample}{ext}"
-				],
-				sample = out_samples["sample_name"],
-				ext = ["_peaks.xls", "_peaks.narrowPeak","_summits.bed"]
-			)
-		)
-
-	if any( (units["call_peaks"]) & (units["peak_type"] == "broad") & (units["read_format"] == "SE")):
-		out_samples =  units[(units["call_peaks"]) & (units["peak_type"] == "broad") & (units["read_format"] == "SE")]
-		final_output.extend(expand(
-				[
-					"results/broad_peaks/se/{sample}{ext}"
-				],
-				sample = out_samples["sample_name"],
-				ext = ["_peaks.xls", "_peaks.broadPeak","_peaks.gappedPeak"]
-			)
-		)
-
-	if any( (units["call_peaks"]) & (units["peak_type"] == "broad") & (units["read_format"] == "PE")):
-		out_samples =  units[(units["call_peaks"]) & (units["peak_type"] == "broad") & (units["read_format"] == "PE")]
-		final_output.extend(expand(
-				[
-					"results/broad_peaks/pe/{sample}{ext}"
-				],
-				sample = out_samples["sample_name"],
-				ext = ["_peaks.xls", "_peaks.broadPeak","_peaks.gappedPeak"]
-			)
-		)
 
 	return final_output
