@@ -33,20 +33,20 @@ rule merge_fastqs:
     shell:
         "cat {input} > {output} 2> {log}"
         
-rule bowtie2_align:
+rule hisat2_align:
 	input:
-		sample=get_bowtie2_input,
+		reads=get_hisat2_input,
 		index=rules.bowtie2_index.output
 	output:
 		temp("results/aligned_reads/mapped/{sample}.bam")
 	log:
-		"logs/bowtie2/{sample}.log"
+		 "logs/hisat2_align_{sample}.log"
 	params:
-		index=lambda w, input: input.index[0].split('.')[0],  # prefix of reference genome index (built with bowtie2-build)
-		extra=config["params"]["bowtie2_align"]   # optional parameters
+		idx="resources/index_genome/",
+		extra=config["params"]["hisat2_align"]   # optional parameters
 	threads: 8  # Use at least two threads
 	wrapper:
-		"v1.1.0/bio/bowtie2/align"
+		"v1.3.2/bio/hisat2/align"
 
 rule samtools_sort:
     input:

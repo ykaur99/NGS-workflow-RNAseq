@@ -97,7 +97,7 @@ rule hisat2_index:
 	log:
 		"logs/hisat2_index_genome.log"
 	params:
-		extra="" # optional parameters
+		extra=config["params"]["hisat2_index"] # optional parameters
 	threads: 8
 	wrapper:
 		"v1.3.2/bio/hisat2/index"
