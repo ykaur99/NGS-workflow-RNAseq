@@ -30,7 +30,15 @@ spikeIn_genome:
   link: http://sgd-archive.yeastgenome.org/sequence/strains/W303/W303_SGD_2015_JRIU00000000/W303_SGD_2015_JRIU00000000.fsa.gz
 
 
-
+# DESeq2 options -------------------------------------------------------------------------
+diff_exp:
+  # contrasts for the deseq2 results method
+  contrasts:
+    degrad-vs-control:
+      - degrad
+      - control
+  model: ~condition
+  count_threshold: 50
 
 # changes to rule paramters ---------------------------------------------------------------
 params:

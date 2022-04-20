@@ -91,9 +91,8 @@ rule hisat2_index:
 	input:
 		fasta="resources/genome.fasta.gz"
 	output:
-		directory("resources/index_genome")
-		prefix = "index_genome/"
-		),
+		directory("resources/index_genome"),
+		prefix = "index_genome/",
 	log:
 		"logs/hisat2_index_genome.log"
 	params:

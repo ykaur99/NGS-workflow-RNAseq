@@ -144,5 +144,14 @@ def get_final_output():
 						sample = units.loc[units["call_peaks"],"sample_group"]
 					)
 				)
-
+		
+		### TEMPORARY, REMOVE WHEN PIPELINE IS COMPLETE ###
+		# count tables
+	final_output.extend(expand(
+					[
+						"results/DEseq2/{experiment}.dds"
+					],
+					experiment = pd.unique(samples["experiment"])
+				)
+			)
 	return final_output

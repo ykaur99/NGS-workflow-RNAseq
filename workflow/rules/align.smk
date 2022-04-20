@@ -36,7 +36,6 @@ rule merge_fastqs:
 rule hisat2_align:
 	input:
 		reads=get_hisat2_input,
-		index=rules.bowtie2_index.output
 	output:
 		temp("results/aligned_reads/mapped/{sample}.bam")
 	log:

@@ -24,7 +24,7 @@ include: "rules/ref.smk"
 include: "rules/align.smk"
 include: "rules/filter.smk"
 include: "rules/bigwigs.smk"
-include: "rules/call_peaks.smk"
+include: "rules/diff_exp.smk"
 
 ##### target rules #####
 rule all:
