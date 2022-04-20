@@ -14,7 +14,7 @@ rule get_ref_genome:
 
 rule get_genome_annotation:
 	output:
-		"resources/annotation.gff.gz",
+		temp("resources/annotation.gff"),
 	log:
 		"logs/get_genome_annotation.log",
 	conda:
@@ -24,7 +24,10 @@ rule get_genome_annotation:
 		link=config["ref_annotation"]["link"],
 	cache: True
 	shell:
-		"curl {params.link} > {output} 2> {log}"
+		"""
+		curl {params.link} > {output}.gz 2> {log}
+		pigz {output}.gz 2>> {log}
+		"""
 
 if config["use_spikeIn"]:
 	rule get_spikeIn_genome:
