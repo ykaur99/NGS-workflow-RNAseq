@@ -18,6 +18,10 @@ ref_genome:
   name: dm6
   link: https://hgdownload.soe.ucsc.edu/goldenPath/dm6/bigZips/dm6.fa.gz
 
+ref_annotation:
+  name: flybase_dm6
+  link: http://ftp.flybase.net/releases/current/dmel_r6.45/gff/dmel-all-r6.45.gff.gz
+
 # spike-in genome options ------------------------------------------------------------------
 use_spikeIn: False
 

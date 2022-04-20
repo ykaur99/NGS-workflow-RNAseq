@@ -12,6 +12,19 @@ rule get_ref_genome:
 	shell:
 		"curl {params.link} > {output} 2> {log}"
 
+rule get_genome_annotation:
+	output:
+		"resources/annotation.gff.gz",
+	log:
+		"logs/get_genome_annotation.log",
+	conda:
+		"../envs/curl.yaml"
+
+	params:
+		link=config["ref_annotation"]["link"],
+	cache: True
+	shell:
+		"curl {params.link} > {output} 2> {log}"
 
 if config["use_spikeIn"]:
 	rule get_spikeIn_genome:
@@ -74,19 +87,18 @@ if config["filter_chroms"]:
 			" | seqkit fx2tab -nil"
 			" |  awk -v OFS='\t' '{{print $1, 1, $2}}' > {output}"
 				
-rule bowtie2_index:
+rule hisat2_index:
 	input:
-		reference="resources/genome.fasta.gz"
+		fasta="resources/genome.fasta.gz"
 	output:
-		multiext(
-			"resources/genome",
-			".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2",
+		directory("resources/index_genome")
+		prefix = "index_genome/"
 		),
 	log:
-		"logs/bowtie2_build/build.log"
+		"logs/hisat2_index_genome.log"
 	params:
 		extra="" # optional parameters
 	threads: 8
 	wrapper:
-		"v1.1.0/bio/bowtie2/build"
+		"v1.3.2/bio/hisat2/index"
 		
