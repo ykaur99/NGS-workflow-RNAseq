@@ -20,7 +20,7 @@ ref_genome:
 
 ref_annotation:
   name: flybase_dm6
-  link: http://ftp.flybase.net/releases/current/dmel_r6.45/gff/dmel-all-r6.45.gff.gz
+  link: https://ftp.flybase.org/genomes/dmel/current/gtf/dmel-all-r6.45.gtf.gz
 
 # spike-in genome options ------------------------------------------------------------------
 use_spikeIn: False
@@ -39,6 +39,8 @@ diff_exp:
       - control
   model: ~condition
   count_threshold: 50
+  padj_cutoff: 0.05
+  log2FC_cutoff: 1
 
 # changes to rule paramters ---------------------------------------------------------------
 params:

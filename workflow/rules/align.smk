@@ -36,12 +36,13 @@ rule merge_fastqs:
 rule hisat2_align:
 	input:
 		reads=get_hisat2_input,
+		idx=rules.hisat2_index.output
 	output:
 		temp("results/aligned_reads/mapped/{sample}.bam")
 	log:
-		 "logs/hisat2_align_{sample}.log"
+		 "logs/hisat2_align/{sample}.log"
 	params:
-		idx="resources/index_genome/",
+		idx="resources/hisat2_index/genome",
 		extra=config["params"]["hisat2_align"]   # optional parameters
 	threads: 8  # Use at least two threads
 	wrapper:

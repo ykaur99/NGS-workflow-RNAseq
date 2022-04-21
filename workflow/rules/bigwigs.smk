@@ -3,7 +3,7 @@ rule make_bigwigs_ind:
 		bam = "results/aligned_reads/filtered/{sample}.bam",
 		bai = "results/aligned_reads/filtered/{sample}.bam.bai"
 	output:
-		"results/bigwigs/coverage/individual/{sample}.bw"
+		temp("results/bigwigs/coverage/individual/{sample}.bw")
 	conda:
 		"../envs/deeptools.yaml"
 	params:
@@ -28,7 +28,7 @@ rule samtools_index_merged:
     input:
         "results/aligned_reads/merged/{sample}.bam"
     output:
-        "results/aligned_reads/merged/{sample}.bam.bai"
+        temp("results/aligned_reads/merged/{sample}.bam.bai")
     log:
         "logs/samtools_index/{sample}.log"
     params:

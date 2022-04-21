@@ -1,6 +1,6 @@
 rule get_ref_genome:
 	output:
-		temp("resources/ref_genome.fasta.gz"),
+		temp("resources/ref_genome.fasta"),
 	log:
 		"logs/get_ref_genome.log",
 	conda:
@@ -10,8 +10,10 @@ rule get_ref_genome:
 		link=config["ref_genome"]["link"],
 	cache: True
 	shell:
-		"curl {params.link} > {output} 2> {log}"
-
+		"""
+		curl {params.link} > {output}.gz 2> {log}
+		unpigz {output}.gz 2>> {log}
+		"""
 rule get_genome_annotation:
 	output:
 		temp("resources/annotation.gff.gz"),
@@ -24,12 +26,12 @@ rule get_genome_annotation:
 		link=config["ref_annotation"]["link"],
 	cache: True
 	shell:
-		"curl {params.link} > {output}.gz 2> {log}"
+		"curl {params.link} > {output} 2> {log}"
 
 if config["use_spikeIn"]:
 	rule get_spikeIn_genome:
 		output:
-			temp("resources/spikeIn_genome.fasta.gz"),
+			temp("resources/spikeIn_genome.fasta"),
 		log:
 			"logs/get_spikeIn_genome.log",
 		conda:
@@ -38,12 +40,15 @@ if config["use_spikeIn"]:
 			link=config["spikeIn_genome"]["link"],
 		cache: True
 		shell:
-			"curl {params.link} > {output} 2> {log}"
+			"""
+			curl {params.link} > {output}.gz 2> {log}
+			unpigz {output}.gz 2>> {log}
+			"""
 
 	rule combine_genomes:
 		input:
-			ref="resources/ref_genome.fasta.gz",
-			spikeIn="resources/spikeIn_genome.fasta.gz",
+			ref="resources/ref_genome.fasta",
+			spikeIn="resources/spikeIn_genome.fasta",
 		output:
 			temp("resources/genome.fasta.gz"),
 		log:
@@ -53,16 +58,16 @@ if config["use_spikeIn"]:
 		cache: True
 		shell:
 			"""
-			seqkit replace -p "(.+)" -r "spikeIn_\$1" -o resources/tmp_spikeIn.fasta.gz {input.spikeIn} 2> {log}
-			cat {input.ref} resources/tmp_spikeIn.fasta.gz > {output} 2>> {log}
-			rm resources/tmp_spikeIn.fasta.gz
+			seqkit replace -p "(.+)" -r "spikeIn_\$1" -o resources/tmp_spikeIn.fasta {input.spikeIn} 2> {log}
+			cat {input.ref} resources/tmp_spikeIn.fasta > {output} 2>> {log}
+			rm resources/tmp_spikeIn.fasta
 			"""
 else:
 		rule rename_genome:
 			input:
-				"resources/ref_genome.fasta.gz",
+				"resources/ref_genome.fasta",
 			output:
-				temp("resources/genome.fasta.gz"),
+				temp("resources/genome.fasta"),
 			log:
 				"logs/rename_genome.log",
 			cache: True
@@ -73,7 +78,7 @@ else:
 if config["filter_chroms"]:
 	rule define_keep_chroms:
 		input:
-			genome="resources/genome.fasta.gz",
+			genome="resources/genome.fasta",
 			keep_chroms=config["keep_chroms"]
 		output:
 			"resources/keep_chroms.bed",
@@ -89,13 +94,13 @@ if config["filter_chroms"]:
 				
 rule hisat2_index:
 	input:
-		fasta="resources/genome.fasta.gz"
+		fasta="resources/genome.fasta"
 	output:
-		directory("resources/index_genome"),
-		prefix = "index_genome/",
+		directory("resources/hisat2_index"),
 	log:
 		"logs/hisat2_index_genome.log"
 	params:
+		prefix = "resources/hisat2_index/genome",
 		extra=config["params"]["hisat2_index"] # optional parameters
 	threads: 8
 	wrapper:

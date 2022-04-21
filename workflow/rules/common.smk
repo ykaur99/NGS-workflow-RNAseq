@@ -86,26 +86,11 @@ def get_featurecounts_input(wildcards):
 	return expand(
 		"results/aligned_reads/filtered/{sample}.bam", sample=in_samples)
 
+def get_contrast(wildcards):
+	return config["diff_exp"]["contrasts"][wildcards.contrast]
+
 def get_final_output():
 	final_output = []
-
-	# coverage bigwigs for individual replicates
-	final_output.extend(expand(
-					[
-						"results/bigwigs/coverage/individual/{sample}.bw"
-					],
-					sample = units["sample_name"]
-				)
-			)
-
-	# coverage bigwigs for merged replicates
-	final_output.extend(expand(
-					[
-						"results/bigwigs/coverage/merged/{sample}.bw"
-					],
-					sample = units["sample_group"]
-				)
-			)
 	
 		# z-score normalized bigwigs for individual replicates
 	final_output.extend(expand(
@@ -145,13 +130,12 @@ def get_final_output():
 					)
 				)
 		
-		### TEMPORARY, REMOVE WHEN PIPELINE IS COMPLETE ###
-		# count tables
+		# DEseq results
 	final_output.extend(expand(
 					[
-						"results/DEseq2/{experiment}.dds"
+						"results/DEseq2/{experiment}_{contrast}_results.tsv"
 					],
-					experiment = pd.unique(samples["experiment"])
+					experiment = pd.unique(samples["experiment"]), contrast = config["diff_exp"]["contrasts"]
 				)
 			)
 	return final_output

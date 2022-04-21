@@ -36,7 +36,8 @@ rule DEseq2:
 
 rule DEseq2_results:
 	input:
-		"results/DEseq2/{experiment}.dds"
+		dds="results/DEseq2/{experiment}.dds",
+		annotation=rules.get_genome_annotation.output
 	output:
 		"results/DEseq2/{experiment}_{contrast}_results.tsv"
 	params:

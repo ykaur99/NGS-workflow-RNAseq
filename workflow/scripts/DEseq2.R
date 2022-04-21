@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(DESeq2))
 suppressPackageStartupMessages(library(tidyverse))
 
 # import count table -----------------------------------------------------------
-count_table <- read_tsv(snakemake@input[[1]]) %>% 
+count_table <- read_tsv(snakemake@input[[1]], comment = "#") %>% 
   select(-c(2:6)) %>% 
   column_to_rownames(var = "Geneid")
 colnames(count_table) <- gsub(".bam", "", colnames(count_table))
@@ -13,7 +13,7 @@ colnames(count_table) <- gsub(".bam", "", colnames(count_table))
 coldata <- read_tsv(snakemake@params[["samples"]])
 
 # run DESeq2 -------------------------------------------------------------------
-dds <- DESeqDataSetFromMatrix(as.matrix(count_table), coldata, design = snakemake@params[["model"]])
+dds <- DESeqDataSetFromMatrix(as.matrix(count_table), coldata, design = as.formula(snakemake@params[["model"]]))
 
 # filter out low count genes
 keep <- rowSums(counts(dds)) >= snakemake@params[["count_threshold"]]
