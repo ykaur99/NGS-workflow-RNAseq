@@ -100,7 +100,7 @@ rule hisat2_index:
 	log:
 		"logs/hisat2_index_genome.log"
 	params:
-		prefix = "resources/hisat2_index/genome",
+		prefix = lambda wildcards, output: output[0],
 		extra=config["params"]["hisat2_index"] # optional parameters
 	threads: 8
 	wrapper:
