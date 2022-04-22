@@ -129,15 +129,23 @@ def get_final_output():
 						sample = units.loc[units["call_peaks"],"sample_group"]
 					)
 				)
-		
-		# DEseq results
-	experiments = pd.unique(samples["experiment"])
-	for e in experiments:
-		final_output.extend(expand(
-						[
-							"results/DEseq2/{experiment}_{contrast}_results.tsv"
-						],
-						experiment = e, contrast = config["diff_exp"]["experiments"][e]["contrasts"]
+	# count_tables
+	final_output.extend(expand(
+							[
+								"results/count_tables/{experiment}.featureCounts"
+							],
+							experiment = pd.unique(samples["experiment"])
+						)
 					)
-				)
+	# DEseq results
+	if config["run_diff_exp"]:
+		experiments = pd.unique(samples["experiment"])
+		for e in experiments:
+			final_output.extend(expand(
+							[
+								"results/DEseq2/{experiment}_{contrast}_results.tsv"
+							],
+							experiment = e, contrast = config["diff_exp"]["experiments"][e]["contrasts"]
+						)
+					)
 	return final_output
