@@ -17,7 +17,7 @@ rule feature_counts:
 		"logs/feature_counts/{experiment}.log",
 	wrapper:
 		"v1.3.2/bio/subread/featurecounts"
-if config[run_diff_exp]:
+if config["run_diff_exp"]:
 	rule DEseq2:
 		input:
 			"results/count_tables/{experiment}.featureCounts"
