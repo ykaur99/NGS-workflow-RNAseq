@@ -45,7 +45,7 @@ def get_hisat2_input(wildcards):
 				return expand("data/sra/se/{accession}.fastq.gz", accession=accession)
 			else:
 				return expand("data/sra/pe/{accession}_{read}.fastq.gz", accession=accession, read=[1,2])
-		fastqs = units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
+		fastqs = units.loc[(wildcards.sample), ["fq1", "fq2"]].dropna()
 		if len(fastqs) == 2:
 			return [fastqs.fq1, fastqs.fq2]
 		return fastqs.fq1
