@@ -31,12 +31,15 @@ spikeIn_genome:
 
 
 # DESeq2 options -------------------------------------------------------------------------
+run_diff_exp: TRUE
 diff_exp:
-  # contrasts for the deseq2 results method
-  contrasts:
-    degrad-vs-control:
-      - degrad
-      - control
+  experiments:
+    GAF_RNAseq:
+      # contrasts for the deseq2 results method
+      contrasts:
+        degrad-vs-control:
+          - degrad
+          - control
   model: ~condition
   count_threshold: 50
   padj_cutoff: 0.05

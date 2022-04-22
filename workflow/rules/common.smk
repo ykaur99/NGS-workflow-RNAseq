@@ -87,7 +87,7 @@ def get_featurecounts_input(wildcards):
 		"results/aligned_reads/filtered/{sample}.bam", sample=in_samples)
 
 def get_contrast(wildcards):
-	return config["diff_exp"]["contrasts"][wildcards.contrast]
+	return config["diff_exp"]["experiments"][wildcards.experiment]["contrasts"][wildcards.contrast]
 
 def get_final_output():
 	final_output = []
@@ -131,11 +131,13 @@ def get_final_output():
 				)
 		
 		# DEseq results
-	final_output.extend(expand(
-					[
-						"results/DEseq2/{experiment}_{contrast}_results.tsv"
-					],
-					experiment = pd.unique(samples["experiment"]), contrast = config["diff_exp"]["contrasts"]
+	experiments = pd.unique(samples["experiment"])
+	for e in experiments:
+		final_output.extend(expand(
+						[
+							"results/DEseq2/{experiment}_{contrast}_results.tsv"
+						],
+						experiment = e, contrast = config["diff_exp"]["experiments"][e]["contrasts"]
+					)
 				)
-			)
 	return final_output
