@@ -42,7 +42,7 @@ rule hisat2_align:
 	log:
 		 "logs/hisat2_align/{sample}.log"
 	params:
-		idx="resources/hisat2_index/genome",
+		idx= lambda wildcards, input: input.idx,
 		extra=config["params"]["hisat2_align"]   # optional parameters
 	threads: 8  # Use at least two threads
 	wrapper:
