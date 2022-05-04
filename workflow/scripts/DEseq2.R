@@ -10,8 +10,11 @@ count_table <- read_tsv(snakemake@input[[1]], comment = "#") %>%
 colnames(count_table) <- gsub(".bam", "", basename(colnames(count_table)))
 
 # create colData table ---------------------------------------------------------
-coldata <- read_tsv(snakemake@params[["samples"]]) %>% 
+sample_table <- read_tsv(snakemake@params[["samples"]]) %>% 
   filter(experiment == snakemake@wildcards[["experiment"]])
+
+coldata <- tibble(sample_name = colnames(count_table)) %>% 
+  left_join(sample_table, by = "sample_name")
 
 # run DESeq2 -------------------------------------------------------------------
 dds <- DESeqDataSetFromMatrix(as.matrix(count_table), coldata, design = as.formula(snakemake@params[["model"]]))
