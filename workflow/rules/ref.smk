@@ -16,7 +16,7 @@ rule get_ref_genome:
 		"""
 rule get_genome_annotation:
 	output:
-		temp("resources/annotation.gff.gz"),
+		"resources/annotation.gff.gz",
 	log:
 		"logs/get_genome_annotation.log",
 	conda:
