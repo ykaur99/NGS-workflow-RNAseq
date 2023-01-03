@@ -17,6 +17,17 @@ rule feature_counts:
 		"logs/feature_counts/{experiment}.log",
 	wrapper:
 		"v1.3.2/bio/subread/featurecounts"
+
+rule RPKM:
+	input:
+		"results/count_tables/{experiment}.featureCounts"
+	output:
+		"results/count_tables/{experiment}_RPKM.tsv"
+	conda:
+		"../envs/DEseq2.yaml",
+	script:
+		"../scripts/compute_RPKM.R"
+
 if config["run_diff_exp"]:
 	rule DEseq2:
 		input:

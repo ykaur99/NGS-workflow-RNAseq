@@ -137,6 +137,14 @@ def get_final_output():
 							experiment = pd.unique(samples["experiment"])
 						)
 					)
+	# RPKM tables
+	final_output.extend(expand(
+							[
+								"results/count_tables/{experiment}_RPKM.tsv"
+							],
+							experiment = pd.unique(samples["experiment"])
+						)
+					)
 	# DEseq results
 	if config["run_diff_exp"]:
 		experiments = pd.unique(samples["experiment"])
