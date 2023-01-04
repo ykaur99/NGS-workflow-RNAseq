@@ -37,4 +37,5 @@ rpkm_table <- rpkm(count_table = select(counts, -c("Length")), widths = counts$L
 
 # write output table ===========================================================
 rpkm_table |> 
+  rownames_to_column(var = "gene_id") |> 
   write_tsv(snakemake@output[[1]])
