@@ -31,7 +31,7 @@ rpkm <- function(count_table, widths) {
 counts <- read_tsv(snakemake@input[[1]], comment = "#") |> 
   select(-c(2:5)) |> 
   column_to_rownames(var = "Geneid")
-
+colnames(counts) <- gsub(".bam", "", basename(colnames(counts)))
 # perform RPKM normalization ===================================================
 rpkm_table <- rpkm(count_table = select(counts, -c("Length")), widths = counts$Length)
 
