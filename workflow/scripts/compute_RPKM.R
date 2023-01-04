@@ -17,10 +17,10 @@ rpkm <- function(count_table, widths) {
     return(cr)
   }
   
-  all_rpkm <- count_table %>%
-    map(column_rpkm) %>%
-    as_tibble() %>%
-    bind_cols(row_names) %>%
+  all_rpkm <- count_table |>
+    map(column_rpkm) |>
+    as_tibble() |>
+    bind_cols(row_names) |>
     column_to_rownames(var = "id")
   
   return(all_rpkm)
@@ -35,7 +35,18 @@ colnames(counts) <- gsub(".bam", "", basename(colnames(counts)))
 # perform RPKM normalization ===================================================
 rpkm_table <- rpkm(count_table = select(counts, -c("Length")), widths = counts$Length)
 
+# add gene names to RPKM table =================================================
+gene_annotation <- rtracklayer::import(snakemake@input[["annotation"]]) |> 
+  mcols() |>
+  as.data.frame() |>
+  filter(type == "gene") |>
+  dplyr::select(gene_id, gene_symbol)
+
+rpkm_table <- rpkm_table |> 
+  rownames_to_column(var = "gene_id") |> 
+  left_join(gene_annotation, by = "gene_id") |> 
+  select(gene_id, gene_symbol, everything())
+
 # write output table ===========================================================
 rpkm_table |> 
-  rownames_to_column(var = "gene_id") |> 
   write_tsv(snakemake@output[[1]])

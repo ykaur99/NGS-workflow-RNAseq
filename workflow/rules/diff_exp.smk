@@ -20,7 +20,8 @@ rule feature_counts:
 
 rule RPKM:
 	input:
-		"results/count_tables/{experiment}.featureCounts"
+		"results/count_tables/{experiment}.featureCounts",
+		annotation=rules.get_genome_annotation.output,
 	output:
 		"results/count_tables/{experiment}_RPKM.tsv"
 	conda:
