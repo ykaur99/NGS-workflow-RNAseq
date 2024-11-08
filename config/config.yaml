@@ -20,7 +20,7 @@ ref_genome:
 
 ref_annotation:
   name: flybase_dm6
-  link: https://ftp.flybase.org/genomes/dmel/current/gtf/dmel-all-r6.45.gtf.gz
+  link: https://ftp.flybase.org/genomes/dmel/current/gtf/dmel-all-r6.60.gtf.gz
 
 # spike-in genome options ------------------------------------------------------------------
 use_spikeIn: False
