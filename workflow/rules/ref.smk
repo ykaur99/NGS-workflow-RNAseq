@@ -78,7 +78,7 @@ else:
 if config["filter_chroms"]:
 	rule define_keep_chroms:
 		input:
-			genome="resources/genome.fasta",
+			genome="resources/genome.fasta.gz",
 			keep_chroms=config["keep_chroms"]
 		output:
 			"resources/keep_chroms.bed",
@@ -94,7 +94,7 @@ if config["filter_chroms"]:
 				
 rule hisat2_index:
 	input:
-		fasta="resources/genome.fasta"
+		fasta="resources/genome.fasta.gz"
 	output:
 		directory("resources/hisat2_index"),
 	log:
