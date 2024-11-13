@@ -94,7 +94,7 @@ if config["filter_chroms"]:
 				
 rule hisat2_index:
 	input:
-		fasta="resources/genome.fasta"
+		fasta="resources/genome.fasta.gz"
 	output:
 		directory("resources/hisat2_index"),
 	log:
