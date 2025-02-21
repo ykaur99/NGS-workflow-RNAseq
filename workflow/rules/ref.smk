@@ -16,7 +16,7 @@ rule get_ref_genome:
 		"""
 rule get_genome_annotation:
 	output:
-		"resources/dmel-all-r6.45.gtf",
+		"resources/dmel-all-r6.61.gtf",
 	log:
 		"logs/get_genome_annotation.log",
 	conda:
