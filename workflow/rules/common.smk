@@ -1,13 +1,13 @@
 import pandas as pd
 
 units = (
-    pd.read_tsv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
+    pd.read_csv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
     .set_index(["sample_name", "unit_name"], drop=False)
     .sort_index()
 )
 
 samples = (
-    pd.read_tsv(config["samples"], sep="\t", dtype={"sample_name": str})
+    pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
     .set_index("sample_name", drop=False)
     .sort_index()
 )
